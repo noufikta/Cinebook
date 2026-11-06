@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}CineBook · Movies{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">YOUR NEXT MOVIE NIGHT</p>
+    <h1>Big stories.<br><span>Better seats.</span></h1>
+    <p>Discover movies, choose seats and confirm your demo ticket.</p>
+</section>
+
+<h2>Now showing</h2>
+
+<div class="grid">
+    {% for movie in movies %}
+        <article class="card">
+            <div class="poster">
+                {% if movie.poster_url %}
+                    <img src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                {% else %}
+                    CB
+                {% endif %}
+            </div>
+
+            <p class="eyebrow">{{ movie.genre }} · {{ movie.language }}</p>
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.duration_minutes }} minutes · {{ movie.certificate }}</p>
+            <a href="{% url 'movie_detail' movie.id %}">View details →</a>
+        </article>
+    {% empty %}
+        <p>No active movies. Add movies in the admin dashboard.</p>
+    {% endfor %}
+</div>
+
+<h2>Upcoming shows</h2>
+
+{% for show in shows %}
+    <div class="row">
+        <div>
+            <b>{{ show.movie.title }}</b>
+            <p>{{ show.cinema_name }} · {{ show.starts_at|date:"D, d M Y · g:i A" }}</p>
+        </div>
+
+        <div>
+            ₹{{ show.ticket_price }}
+            <a class="button" href="{% url 'book_show' show.id %}">Book</a>
+        </div>
+    </div>
+{% empty %}
+    <p>No upcoming shows.</p>
+{% endfor %}
+{% endblock %}

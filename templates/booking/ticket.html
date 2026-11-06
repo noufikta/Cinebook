@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="ticket">
+    <p class="eyebrow">CINEBOOK E-TICKET · DEMO</p>
+
+    <h1>{{ booking.show.movie.title }}</h1>
+
+    <p>Reference: {{ booking.booking_reference }}</p>
+
+    <div class="row">
+        <div>
+            <p>Showtime</p>
+            <b>{{ booking.show.starts_at|date:"D, d M Y · g:i A" }}</b>
+        </div>
+
+        <div>
+            <p>Cinema / Screen</p>
+            <b>{{ booking.show.cinema_name }} / {{ booking.show.screen_name }}</b>
+        </div>
+    </div>
+
+    <p>
+        Seats:
+        {% for seat in booking.seats.all %}
+            {{ seat.seat_number }}
+        {% endfor %}
+    </p>
+
+    <p>Booking status: {{ booking.get_status_display }}</p>
+    <p>Payment status: {{ booking.get_payment_status_display }}</p>
+
+    <h2>Total: ₹{{ booking.total_amount }}</h2>
+
+    <p>This is not a real cinema ticket. No actual payment has been processed.</p>
+
+    <button class="button" onclick="window.print()">Print ticket</button>
+</section>
+{% endblock %}

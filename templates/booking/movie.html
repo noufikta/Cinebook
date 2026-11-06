@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="/">← Movies</a>
+
+<h1>{{ movie.title }}</h1>
+<p>{{ movie.description }}</p>
+<p>
+    {{ movie.genre }} · {{ movie.language }} ·
+    {{ movie.duration_minutes }} minutes · {{ movie.certificate }}
+</p>
+
+<h2>Showtimes</h2>
+
+{% for show in shows %}
+    <div class="row">
+        <div>
+            <b>{{ show.cinema_name }} · {{ show.screen_name }}</b>
+            <p>{{ show.starts_at|date:"D, d M Y · g:i A" }}</p>
+        </div>
+
+        <div>
+            ₹{{ show.ticket_price }}
+            <a class="button" href="{% url 'book_show' show.id %}">
+                Select seats
+            </a>
+        </div>
+    </div>
+{% empty %}
+    <p>No future showtimes.</p>
+{% endfor %}
+{% endblock %}

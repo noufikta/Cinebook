@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}CineBook{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+<header>
+    <a class="logo" href="/">CINE<span>BOOK</span></a>
+
+    <nav>
+        <a href="/">Movies</a>
+
+        {% if user.is_authenticated %}
+            <a href="/my-bookings/">My bookings</a>
+
+            {% if user.is_staff %}
+                <a href="/admin/">Admin</a>
+            {% endif %}
+
+            <form class="inline" method="post" action="/logout/">
+                {% csrf_token %}
+                <button type="submit">Log out</button>
+            </form>
+        {% else %}
+            <a href="/login/">Log in</a>
+            <a href="/register/">Register</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer>CineBook College Project · Payment is simulated only</footer>
+</body>
+</html>

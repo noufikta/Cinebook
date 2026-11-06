@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p class="eyebrow">SEAT SELECTION</p>
+
+<h1>{{ show.movie.title }}</h1>
+
+<p>
+    {{ show.cinema_name }} ·
+    {{ show.starts_at|date:"D, d M Y · g:i A" }} ·
+    ₹{{ show.ticket_price }} per seat
+</p>
+
+<section class="panel">
+    <div class="screen">SCREEN</div>
+    <p>Green = available · Grey = booked</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+        {{ form.seats.errors }}
+
+        <div class="seats">
+            {% for seat in seats %}
+                <label class="seat {% if seat.status == 'BOOKED' %}booked{% endif %}">
+                    <input
+                        type="checkbox"
+                        name="seats"
+                        value="{{ seat.seat_number }}"
+                        {% if seat.status == 'BOOKED' %}disabled{% endif %}
+                    >
+                    <span>{{ seat.seat_number }}</span>
+                </label>
+            {% endfor %}
+        </div>
+
+        <p>Maximum 10 seats per booking. Payment is simulated.</p>
+
+        <button class="button" type="submit">
+            Simulate payment & confirm
+        </button>
+    </form>
+</section>
+{% endblock %}
